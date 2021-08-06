@@ -12,6 +12,11 @@ import requests
 import json
 import csv
 
+try:
+    input = raw_input
+except NameError:
+    pass
+
 base_url = 'https://{subdomain}.talentlms.com/api/v1'
 headers = {
   'Authorization': 'Basic {apikey}',
@@ -22,7 +27,7 @@ deactivation_date = '{date}'
 
 # Ask user for name of csv file
 print("Please make sure your csv file is formatted to only contain one column of email addresses and no additional data. \n")
-csv_input = raw_input("Enter the filename of the csv: ")
+csv_input = input("Enter the filename of the csv: ")
 
 email_address = []
 

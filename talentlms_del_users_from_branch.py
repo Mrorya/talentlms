@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# The purpose of this script is to add a list of users from a CSV to a specific course
+# The purpose of this script is to remove a list of users from a CSV to a specific branch
 # in TalentLMS.
 # 
 # As this does updating of live data rather than reporting, caution should be used prior
@@ -16,14 +16,12 @@ try:
 except NameError:
     pass
 
-base_url = 'https://{subdomain}.talentlms.com/api/v1'
+base_url = 'https://{domain}.talentlms.com/api/v1'
 headers = {
   'Authorization': 'Basic {apikey}',
 }
 
-# Define course to add
-course_id = "{courseid}"
-role = "learner"
+branch_id = "{branch_id}"
 
 # Ask user for name of csv file
 print("Please make sure your csv file is formatted to only contain one column of email addresses and no additional data. \n")
@@ -59,17 +57,11 @@ for i in email_address:
 print("Users not found include: \n")
 print(users_not_found)
 
-# Iterate through user_ids to add all users to course
+# Iterate through user_ids to add all users to branch
 count = 0
 for i in user_id:
-    url = base_url + '/addusertocourse'
+    url = base_url + '/removeuserfrombranch/user_id:' + user_id[count] + ",branch_id:" + branch_id
 
-    payload = {
-        'user_id' : user_id[count],
-        'course_id' : course_id,
-        'role' : role
-    }
-
-    response = requests.post(url, headers=headers, data=payload)
+    response = requests.post(url, headers=headers)
     print(response.text.encode('utf8'))
     count += 1
